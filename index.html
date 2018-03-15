@@ -1,13 +1,18 @@
 <script src="http://threejs.org/build/three.js"></script>
 <script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+<script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
 <body style="margin:0;padding:0;">
 </body>
 <script>
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 2000);
     var render = new THREE.WebGLRenderer();
-    camera.position.set(0, 50, 153);
-
+   
+    camera.position.set(0, 50, 453);
+    //camera.lookAt(scene.position);
+    // Add OrbitControls so that we can pan around with the mouse.
+    controls = new THREE.OrbitControls(camera, render.domElement);
+   
     render.setSize(innerWidth, innerHeight);
     document.body.appendChild(canvas = render.domElement);
 
@@ -29,11 +34,46 @@
         });
         render.render(scene, camera);
 
-        var light = new THREE.PointLight( 0xff0000, 1, 500 );
-        light.position.set( 50, 50, 50 );
+        var light = new THREE.PointLight( 0xff0000, 1, 800 );
+        light.position.set( 100, 250, 250 );
         scene.add( light );
+
+        /*var light2 = new THREE.PointLight(0xffffff);
+        light2.position.set(100, 250, 250);
+        scene.add(light2);*/
+
+
     }
 
+    function animate() {
+
+      // required if controls.enableDamping or controls.autoRotate are set to true
+      controls.update();
+
+      render.render( scene, camera );
+ 
+      requestAnimationFrame( animate );
+    
+      document.addEventListener("keydown", onDocumentKeyDown, false);
+
+    }
+
+    function onDocumentKeyDown(event) {
+      var keyCode = event.which;
+      if (keyCode == 87) {
+        model.position.y += 5;
+      } else if (keyCode == 83) {
+        model.position.y -= 5;
+      } else if (keyCode == 65) {
+        model.position.x -= 5;
+      } else if (keyCode == 68) {
+        model.position.x += 5;
+      } else if (keyCode == 32) {
+        cube.position.set(0, 0, 0);
+      }
+};
+
     window.onload = loadScene;
+    animate()
 </script>
 

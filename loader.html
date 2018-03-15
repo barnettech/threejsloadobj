@@ -1,0 +1,42 @@
+<script src="http://threejs.org/build/three.js"></script>
+<script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+<body style="margin:0;padding:0;">
+</body>
+<script>
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 2000);
+    var render = new THREE.WebGLRenderer();
+    camera.position.set(0, 880, 853);
+
+    render.setSize(innerWidth, innerHeight);
+    document.body.appendChild(canvas = render.domElement);
+
+    render.setClearColor(0x111111, 1);
+
+    function loadScene() {
+        var loader = new THREE.OBJLoader();
+        loader.load("./MIKASA2.obj", function(model) {
+          model.traverse(function(child) {
+        if (child instanceof THREE.Mesh) {
+          //child.material.color = 0xffb830;
+          //new THREE.Color(0xff0000)
+        }
+        });
+        model.position.set(0, 0, -53);
+        scene.add(model);
+        window.model = model;
+        render.render(scene, camera);
+        });
+        render.render(scene, camera);
+
+        var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+        scene.add( light );
+
+        /*var light = new THREE.PointLight( 0xff0000, 1, 500 );
+        light.position.set( 50, 50, 50 );
+        scene.add( light );*/
+    }
+
+    window.onload = loadScene;
+</script>
+
